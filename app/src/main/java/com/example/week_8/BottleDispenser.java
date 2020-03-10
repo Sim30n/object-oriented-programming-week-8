@@ -35,8 +35,8 @@ public class BottleDispenser{
         return single_instance;
     }
 
-    public String addMoney() {
-        money += 1;
+    public String addMoney(int progressChangedValue) {
+        money += progressChangedValue;
         String addPrint = ("Klink! Added more money! Balance: "+ money);
         return addPrint;
     }
