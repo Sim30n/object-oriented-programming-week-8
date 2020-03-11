@@ -4,19 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
     BottleDispenser bottledispenser = BottleDispenser.getInstance();
     TextView text;
-    TextView money;
     EditText mEdit;
     SeekBar seekbar;
+    Spinner sBrands;
+    Spinner s;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +48,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        String[] arraySpinner = new String[] {
+                "0.5", "1.5"
+        };
+        s = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setAdapter(adapter);
+
+        String[] arrayBrands = new String[] {
+                "Pepsi Max", "Coca-Cola Zero", "Fanta Zero"
+        };
+        sBrands = (Spinner) findViewById(R.id.spinner1);
+        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arrayBrands);
+        brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sBrands.setAdapter(brandAdapter);
     }
 
     public void addMoney(View v){
-        System.out.println(seekbar.getProgress());
         String addM = bottledispenser.addMoney(seekbar.getProgress());
         text.setText(addM);
     }
@@ -57,10 +80,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buyBottle(View v){
-        mEdit   = (EditText)findViewById(R.id.editText);
-        String value = mEdit.getText().toString();
-        int choice = Integer.parseInt(value);
-        String buyB = bottledispenser.buyBottle(choice);
+        s = (Spinner) findViewById(R.id.spinner);
+        //mEdit   = (EditText)findViewById(R.id.editText);
+        String value = sBrands.getSelectedItem().toString();
+        //int choice = Integer.parseInt(value);
+        String size_str = s.getSelectedItem().toString();
+        double size = Double.parseDouble(size_str);
+        String buyB = bottledispenser.buyBottle(value, size);
         text.setText(buyB);
     }
 

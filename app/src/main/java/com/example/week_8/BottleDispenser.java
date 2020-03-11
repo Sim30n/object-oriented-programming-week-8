@@ -41,14 +41,20 @@ public class BottleDispenser{
         return addPrint;
     }
 
-    public String buyBottle(int choice) {
+    public String buyBottle(String value, double size) {
         String buyB;
-        if(money >= bottle_array.get(choice-1).getCost()) {
-            money -= bottle_array.get(choice-1).getCost();
-            buyB = ("KACHUNK! "+ bottle_array.get(choice-1).getName() +" came out of the dispenser!");
-            bottle_array.remove(choice-1);
-        } else {
-            buyB = ("Add money first!");
+        buyB = ("Out of stock!");
+        for (int i = 0; i < bottle_array.size(); i++) {
+            if(money >= bottle_array.get(i).getCost() && size == bottle_array.get(i).getSize() && value == bottle_array.get(i).getName() ) {
+                money -= bottle_array.get(i).getCost();
+                buyB = ("KACHUNK! "+ bottle_array.get(i).getName() +" came out of the dispenser!");
+                bottle_array.remove(i);
+                break;
+            } else if (money < bottle_array.get(choice).getCost()){
+                buyB = ("Add money first!");
+            } else if (size != bottle_array.get(choice).getSize() && value == bottle_array.get(choice).getName()){
+                buyB = ("We don't have that size!");
+            }
         }
         return buyB;
     }
