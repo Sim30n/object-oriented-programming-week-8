@@ -2,24 +2,26 @@ package com.example.week_8;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 
 
 public class MainActivity extends AppCompatActivity {
 
     BottleDispenser bottledispenser = BottleDispenser.getInstance();
+    Context context = null;
     TextView text;
-    EditText mEdit;
     SeekBar seekbar;
     Spinner sBrands;
     Spinner s;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         text = (TextView) findViewById(R.id.textView);
         seekbar = (SeekBar)findViewById(R.id.seekBar);
+        context = MainActivity.this;
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChangedValue = 0;
 
@@ -81,9 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void buyBottle(View v){
         s = (Spinner) findViewById(R.id.spinner);
-        //mEdit   = (EditText)findViewById(R.id.editText);
         String value = sBrands.getSelectedItem().toString();
-        //int choice = Integer.parseInt(value);
         String size_str = s.getSelectedItem().toString();
         double size = Double.parseDouble(size_str);
         String buyB = bottledispenser.buyBottle(value, size);
@@ -93,6 +94,20 @@ public class MainActivity extends AppCompatActivity {
     public void returnMoney(View v) {
         String returnM = bottledispenser.returnMoney();
         text.setText(returnM);
+    }
+
+    public void writeFile(View v){
+        try{
+            OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput("kuitti.txt", Context.MODE_PRIVATE));
+            String s = bottledispenser.printRecipt();
+            ows.write(s);
+            System.out.println(s);
+            ows.close();
+        } catch(IOException e) {
+            Log.e("IOException", "Virhe syötteessä");
+        } finally {
+            System.out.println("Kirjoitettu");
+        }
     }
 
 }

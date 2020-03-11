@@ -1,9 +1,6 @@
 package com.example.week_8;
 
-import android.view.View;
-
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class BottleDispenser{
 
@@ -13,7 +10,7 @@ public class BottleDispenser{
     public int choice;
 
     ArrayList<Bottle> bottle_array = new ArrayList<Bottle>();
-    Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+    ArrayList<Recipt> recipt_array = new ArrayList<Recipt>();
 
     private BottleDispenser() {
 
@@ -48,6 +45,7 @@ public class BottleDispenser{
             if(money >= bottle_array.get(i).getCost() && size == bottle_array.get(i).getSize() && value == bottle_array.get(i).getName() ) {
                 money -= bottle_array.get(i).getCost();
                 buyB = ("KACHUNK! "+ bottle_array.get(i).getName() +" came out of the dispenser!");
+                recipt_array.add(new Recipt(bottle_array.get(i).getName(),bottle_array.get(i).getCost(),bottle_array.get(i).getSize()));
                 bottle_array.remove(i);
                 break;
             } else if (money < bottle_array.get(choice).getCost()){
@@ -64,11 +62,9 @@ public class BottleDispenser{
         return returnM;
     }
 
-    public void printBottles() {
-        for(int i = 0;i<bottle_array.size();i++) {
-            System.out.println(i+1 +". Name: "+bottle_array.get(i).getName());
-            System.out.println("	Size: "+bottle_array.get(i).getSize()+"	Price: "+bottle_array.get(i).getCost());
-        }
+    public String printRecipt(){
+        String recipt ="This is recipt!\n"+recipt_array.get(recipt_array.size()-1).getName() +" "+ recipt_array.get(recipt_array.size()-1).getSize()+"l "+recipt_array.get(recipt_array.size()-1).getCost()+"€ ";
+        return recipt;
 
     }
 
