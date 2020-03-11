@@ -59,6 +59,7 @@ public class BottleDispenser{
 
     public String returnMoney() {
         String returnM = String.format("Klink klink. Money came out! You got %.02f€ back", money);
+        money = 0;
         return returnM;
     }
 
